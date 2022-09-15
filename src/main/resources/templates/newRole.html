@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new user</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <p class="navbar-brand text-white">
+            <b th:object="${userForBar}"><span class="align-middle" th:text="${userForBar.getUsername()}"></span></b>
+            <span class="align-middle">with roles:</span>
+            <span class="align-middle" th:text="${userForBar.getRolesToString()}"></span>
+        </p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-dark text-secondary">Logout</button>
+        </form>
+    </div>
+</nav>
+
+
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div sec:authorize="hasAuthority('ROLE_USER')">
+                        <a class="nav-item nav-link" th:href="@{/user}">Моя страница</a>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_ADMIN')">
+                        <a class="nav-item nav-link" th:href="@{/admin}">Пространство директора</a>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_BUH')">
+                        <a class="nav-link active" aria-controls="v-pills-home" aria-selected="true">Пространство бухгалтера</a>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_OWNER')">
+                        <a class="nav-item nav-link" th:href="@{/owner}">Пространство учредителя</a>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_EXECUTIVE_DIRECTOR')">
+                        <a class="nav-item nav-link" th:href="@{/executiveDirector}">Пространство исполн. директора</a>
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_HR')">
+                        <a class="nav-item nav-link" th:href="@{/hr}">Пространство работника отдела кадров</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-10 px-0">
+                <div class="container-fluid">
+                    <h2 class="m-3 fw-bold">Admin panel</h2>
+                    <div class="tab-content" id="tabContent">
+                        <ul class="nav nav-tabs">
+                            <a class="nav-link" data-toggle="tab" href="/admin">Users Table</a>
+                            <a class="nav-link active" data-toggle="tab">New User</a>
+                        </ul>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="m-1">
+                                    <h5>All users</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md bg-white border">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center ">
+                                <div class="card-body">
+
+
+                                    <form th:action="@{/admin/newRole}" th:object="${role}" method="post">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input
+                                                    type="text"
+                                                    name="name"
+                                                    class="form-control"
+                                                    value=""
+                                                    placeholder="Name..."
+                                            />
+                                        </div>
+
+
+                                        <div class="custom-control custom-switch">
+                                            <input name="canRead" type="checkbox" class="custom-control-input" id="canRead">
+                                            <label class="custom-control-label" for="canRead" th:checked="true">Только чтение</label>
+                                        </div>
+
+                                        <div class="custom-control custom-switch">
+                                            <input name="canEdit" type="checkbox" class="custom-control-input" id="canEdit">
+                                            <label class="custom-control-label" for="canEdit" th:checked="true">Редактирование</label>
+                                        </div>
+
+                                        <div class="custom-control custom-switch">
+                                            <input name="canRemove" type="checkbox" class="custom-control-input" id="canRemove">
+                                            <label class="custom-control-label" for="canRemove" th:checked="true">Удаление</label>
+                                        </div>
+
+                                        <div class="custom-control custom-switch">
+                                            <input name="canCreate" type="checkbox" class="custom-control-input" id="canCreate">
+                                            <label class="custom-control-label" for="canCreate" th:checked="true">Создание</label>
+                                        </div>
+
+                                        <div class="box-footer">
+                                            <button type="submit" class="btn btn-primary">
+                                                Add Role
+                                            </button>
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+</body>
+</html>

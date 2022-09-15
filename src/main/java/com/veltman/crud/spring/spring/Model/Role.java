@@ -15,6 +15,12 @@ public class Role implements GrantedAuthority {
 
     private String name;
 
+    private boolean canRead;
+    private boolean canEdit;
+    private boolean canRemove;
+    private boolean canCreate;
+
+
     @Transient
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
@@ -30,6 +36,7 @@ public class Role implements GrantedAuthority {
         this.id = id;
         this.name = name;
     }
+
 
     public int getId() {
         return id;
@@ -63,5 +70,37 @@ public class Role implements GrantedAuthority {
     @Override
     public String toString() {
         return name.substring(5);
+    }
+
+    public boolean isCanRead() {
+        return canRead;
+    }
+
+    public void setCanRead(boolean canRead) {
+        this.canRead = canRead;
+    }
+
+    public boolean isCanEdit() {
+        return canEdit;
+    }
+
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
+    }
+
+    public boolean isCanRemove() {
+        return canRemove;
+    }
+
+    public void setCanRemove(boolean canRemove) {
+        this.canRemove = canRemove;
+    }
+
+    public boolean isCanCreate() {
+        return canCreate;
+    }
+
+    public void setCanCreate(boolean canCreate) {
+        this.canCreate = canCreate;
     }
 }

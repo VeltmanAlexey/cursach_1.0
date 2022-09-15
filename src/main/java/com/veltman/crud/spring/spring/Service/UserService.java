@@ -81,8 +81,9 @@ public class UserService implements UserDetailsService, UserServiceImp {
         return roles;
     }
 
-
-
+    public void saveRole(Role role) {
+        roleRepository.save(role);
+    }
 
 
     public void deleteUserById(int id) {

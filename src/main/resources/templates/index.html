@@ -30,62 +30,129 @@
         <div class="row">
             <div class="col-2 p-0">
                 <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <div sec:authorize="hasAuthority('ROLE_USER')">
-                        <a class="nav-item nav-link" th:href="@{/user}">Моя страница</a>
-                    </div>
-                    <div sec:authorize="hasAuthority('ROLE_ADMIN')">
-                        <a class="nav-link active" th:href="@{/admin}" aria-selected="true">Пространство директора</a>
-                    </div>
-                    <div sec:authorize="hasAuthority('ROLE_BUH')">
-                        <a class="nav-item nav-link" th:href="@{/buh}">Пространство бухгалтера</a>
-                    </div>
-                    <div sec:authorize="hasAuthority('ROLE_OWNER')">
-                        <a class="nav-item nav-link" th:href="@{/owner}">Пространство учредителя</a>
-                    </div>
-                    <div sec:authorize="hasAuthority('ROLE_EXECUTIVE_DIRECTOR')">
-                        <a class="nav-item nav-link" th:href="@{/executiveDirector}">Пространство исполн. директора</a>
-                    </div>
-                    <div sec:authorize="hasAuthority('ROLE_HR')">
-                        <a class="nav-item nav-link" th:href="@{/hr}">Пространство работника отдела кадров</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-10 px-0">
-                <div class="container-fluid">
 
-                    <h2 class="m-3 fw-bold">Admin panel</h2>
-
-                    <div class="tab-content" id="tabContent">
+                    <!-- ------ поля у роли: ------ -->
+                    <!-- ------  canRead  --------- -->
+                    <!-- ------  canEdit  --------- -->
+                    <!-- ------  canRemove  ------- -->
+                    <!-- ------  canCreate  ------- -->
+                    
+                    <!--1 ------ только чтение ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit == false && list.canRemove == false && list.canCreate == false}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
 
 
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="m-1">
-                                    <h5>All users</h5>
+
+
+
+
+
+
+
+                    <!--2 ------ чтение, редактирование ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit && list.canRemove == false && list.canCreate == false}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--3 ------ чтение, удаление ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit == false && list.canRemove && list.canCreate == false}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--4 ------ чтение, создание ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit == false && list.canRemove == false && list.canCreate}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--5 ------ чтение, редактирование, удаление ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit && list.canRemove && list.canCreate == false}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--6 ------ чтение, редактирование, создание ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit && list.canRemove == false && list.canCreate}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--6 ------ чтение, редактирование, создание ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit && list.canRemove == false && list.canCreate}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--7 ------ чтение, удаление, создание ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit == false && list.canRemove && list.canCreate}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                    <!--8 ------ чтение, удаление, создание, редактирование ------ -->
+                    <a class="nav-link" th:each="list : ${userForBar.roles}"
+                       th:value="${list.name}"
+                       th:if="${list.canRead && list.canEdit && list.canRemove && list.canCreate}"
+                       th:href="@{/admin}"
+                       th:text="${list.getName()}"></a>
+
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-10 px-0">
+                                    <div class="container-fluid">
 
-                            <div class="card-body" bg-primary text-white>
-                                <table class="table table-striped table-hover">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Age</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                    <tr th:each="users : ${user}">
-                                        <td th:text="${users.id}">id</td>
-                                        <td th:text="${users.username}">name</td>
-                                        <td th:text="${users.lastname}">lastname</td>
-                                        <td th:text="${users.age}">age</td>
-                                        <td th:text="${users.email}">email</td>
-                                        <td th:text="${users.getRolesToString()}">roles</td>
+                                        <h2 class="m-3 fw-bold">Admin panel</h2>
 
-                                        <!--  Edit-->
+                                        <div class="tab-content" id="tabContent">
+
+
+                                            <ul class="nav nav-tabs">
+                                                <a class="nav-link active" data-toggle="tab">Users Table</a>
+                                                <a class="nav-link"  th:href="@{/admin/new}">New User</a>
+                                                <a class="nav-link"  th:href="@{/admin/newRole}">New Role</a>
+                                            </ul>
+
+
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="m-1">
+                                                        <h5>All users</h5>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-body" bg-primary text-white>
+                                                    <table class="table table-striped table-hover">
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>First Name</th>
+                                                            <th>Last Name</th>
+                                                            <th>Age</th>
+                                                            <th>Email</th>
+                                                            <th>Role</th>
+                                                            <th>Edit</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                        <tr th:each="users : ${user}">
+                                                            <td th:text="${users.id}">id</td>
+                                                            <td th:text="${users.username}">name</td>
+                                                            <td th:text="${users.lastname}">lastname</td>
+                                                            <td th:text="${users.age}">age</td>
+                                                            <td th:text="${users.email}">email</td>
+                                                            <td th:text="${users.getRolesToString()}">roles</td>
+
+                                                            <!--  Edit-->
                                         <td>
                                             <button type="button" class="btn btn-info" data-toggle="modal"
                                                     th:data-target="${'#edit' + users.id}">Edit

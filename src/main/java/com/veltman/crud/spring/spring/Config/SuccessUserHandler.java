@@ -17,16 +17,10 @@ public class SuccessUserHandler implements AuthenticationSuccessHandler {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if (roles.contains("ROLE_ADMIN")) {
             response.sendRedirect("/admin");
-        } else if (roles.contains("ROLE_BUH")) {
-            response.sendRedirect("/buh");
-        } else if (roles.contains("ROLE_OWNER")) {
-            response.sendRedirect("/owner");
-        } else if (roles.contains("ROLE_EXECUTIVE_DIRECTOR")) {
-            response.sendRedirect("/executiveDirector");
-        } else if (roles.contains("ROLE_HR")) {
-            response.sendRedirect("/hr");
         } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user");
+        } else {
+            response.sendRedirect("/admin");
         }
     }
 

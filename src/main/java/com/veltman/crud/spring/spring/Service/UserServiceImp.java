@@ -25,4 +25,7 @@ public interface UserServiceImp {
 
     User findByUsername(String username);
 
+    void saveRole(Role role);
+
+
 }
