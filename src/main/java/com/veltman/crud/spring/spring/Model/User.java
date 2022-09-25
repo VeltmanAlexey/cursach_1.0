@@ -15,24 +15,30 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String username;
+    private String username;    // логин
+    private String password;    // пароль
 
-    private String email;
-
-
-    private String lastname;
-
-    private String password;
-
-    private int age;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserInf userInf;
 
     @Transient
     private String passwordConfirm;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {
+    }
+
+
+    public UserInf getUserInf() {
+        return userInf;
+    }
+
+    public void setUserInf(UserInf userInf) {
+        this.userInf = userInf;
     }
 
 
@@ -106,30 +112,5 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 
 }

@@ -3,6 +3,7 @@ package com.veltman.crud.spring.spring.Controller;
 
 import com.veltman.crud.spring.spring.Model.Role;
 import com.veltman.crud.spring.spring.Model.User;
+import com.veltman.crud.spring.spring.Model.UserInf;
 import com.veltman.crud.spring.spring.Service.UserService;
 import com.veltman.crud.spring.spring.Service.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,7 @@ public class UserController {
         this.userServiceImp = userServiceImp;
     }
 
-    // worker
-    @GetMapping("/user")
-    public String userPage(Model model, Principal principal) {
-        model.addAttribute("userForBar", userServiceImp.findByUsername(principal.getName()));
-        model.addAttribute("ROLE_ADMIN",userServiceImp.findRolesByName("ROLE_ADMIN"));
-        User user = userServiceImp.findByUsername(principal.getName());
-        model.addAttribute("user", user);
-        return "/user";
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -41,22 +34,19 @@ public class UserController {
         model.addAttribute("userForBar", userServiceImp.findByUsername(principal.getName()));
         model.addAttribute("user", userServiceImp.getAllUsers());
         model.addAttribute("roles", userServiceImp.listRoles());
+        model.addAttribute("userForCreate", new User());
+        model.addAttribute("userForForm", new User());
+        model.addAttribute("userInf", new UserInf());
         return "/index";
     }
 
-    // admin
-    @GetMapping("/admin/new")
-    public String addUser(Model model, Principal principal) {
-        model.addAttribute("userForBar", userServiceImp.findByUsername(principal.getName()));
-        model.addAttribute("roles", userServiceImp.listRoles());
-        model.addAttribute("user", new User());
-        return "new";
-    }
+
 
     // admin
     @PostMapping("/admin")
-    public String add(@ModelAttribute("user") User user) {
-        userServiceImp.saveUser(user);
+    public String add(@ModelAttribute("user") User user, @ModelAttribute("userInf") UserInf userInf) {
+        userServiceImp.saveUser(user, userInf);
+
         return "redirect:/admin";
     }
 
@@ -69,9 +59,13 @@ public class UserController {
 
     // admin
     @PatchMapping("admin/{id}")
-    public String update(@ModelAttribute("users")User user, @PathVariable("id") int id, @RequestParam(value = "role") String role) {
+    public String update(@ModelAttribute("users")User user,
+                         @PathVariable("id") int id,
+                         @RequestParam(value = "role") String role,
+                         @ModelAttribute("userInf")UserInf userInf
+                         ) {
         user.setRoles(userServiceImp.findRolesByName(role));
-        userServiceImp.updateUser(user, id);
+        userServiceImp.updateUser(user, id, userInf);
         return "redirect:/admin";
     }
 

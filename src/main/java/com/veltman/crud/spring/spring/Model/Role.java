@@ -12,9 +12,8 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String name;
-
+    private String fakeName;
     private boolean canRead;
     private boolean canEdit;
     private boolean canRemove;
@@ -30,6 +29,14 @@ public class Role implements GrantedAuthority {
 
     public Role(int id) {
         this.id = id;
+    }
+
+    public String getFakeName() {
+        return fakeName;
+    }
+
+    public void setFakeName(String fakeName) {
+        this.fakeName = fakeName;
     }
 
     public Role(int id, String name) {
@@ -69,7 +76,7 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return name.substring(5);
+        return fakeName;
     }
 
     public boolean isCanRead() {

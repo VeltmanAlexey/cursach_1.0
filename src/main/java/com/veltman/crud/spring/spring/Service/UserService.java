@@ -3,8 +3,10 @@ package com.veltman.crud.spring.spring.Service;
 
 import com.veltman.crud.spring.spring.Model.Role;
 import com.veltman.crud.spring.spring.Model.User;
+import com.veltman.crud.spring.spring.Model.UserInf;
 import com.veltman.crud.spring.spring.Repository.RoleRepository;
 import com.veltman.crud.spring.spring.Repository.UserRepository;
+import com.veltman.crud.spring.spring.Tools.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,14 +31,16 @@ public class UserService implements UserDetailsService, UserServiceImp {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final RandomString randomString;
 
 
     @Autowired
     @Lazy
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, RandomString randomString) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.randomString = randomString;
     }
 
 
@@ -53,20 +57,23 @@ public class UserService implements UserDetailsService, UserServiceImp {
         return userRepository.findAll();
     }
 
-    public void saveUser(User user) {
+    public void saveUser(User user, UserInf userInf) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setUserInf(userInf);
+        userInf.setId(user.getId());
         userRepository.save(user);
     }
 
 
 
     @Transactional
-    public User updateUser(User user, int id) {
+    public User updateUser(User user, int id, UserInf userInf) {
         User userFromDb = getUserById(user.getId());
 
         if (!userFromDb.getPassword().equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
+        user.setUserInf(userInf);
         userRepository.save(user);
         return user;
     }
@@ -82,6 +89,7 @@ public class UserService implements UserDetailsService, UserServiceImp {
     }
 
     public void saveRole(Role role) {
+        role.setName("ROLE_" + randomString.getAlphaNumericString(15));
         roleRepository.save(role);
     }
 
